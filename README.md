@@ -72,6 +72,9 @@ vertical_slice/
 1. **Python 3.10+**
 2. **Blender 3.0+** 
 3. **OpenAI API Key**
+4. **Blender Addons:**
+   - Blender MCP (for socket communication)
+   - QRemeshify (for topology optimization)
 
 ### Step 1: Install Dependencies
 
@@ -90,12 +93,20 @@ BLENDER_HOST=localhost
 BLENDER_PORT=9876
 ```
 
-### Step 3: Install Blender MCP Addon
+### Step 3: Install Blender Addons
 
+**A) Blender MCP Addon:**
 1. Download: `../repos/blender-mcp/addon.py`
 2. Open Blender → Edit → Preferences → Add-ons
 3. Click "Install..." → Select `addon.py`
 4. Enable "Interface: Blender MCP"
+
+**B) QRemeshify Addon:**
+1. Download from: https://github.com/ksami/QRemeshify/releases
+2. Open Blender → Edit → Preferences → Add-ons
+3. Click dropdown arrow (top right) → "Install from Disk..."
+4. Select downloaded zip file
+5. Enable "QRemeshify"
 
 ### Step 4: Start Blender Server
 
@@ -150,6 +161,7 @@ python test_client.py "create a cube"
 | `create a cube` | Creates a 2x2 cube | Default size |
 | `create a sphere` | Creates a UV sphere | Default radius 1.0 |
 | `import mesh from [path]` | Imports OBJ/FBX file | Full file path required |
+| `remesh [object]` | Remeshes object to clean quads | "remesh suzanne" |
 
 ---
 

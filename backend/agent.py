@@ -51,16 +51,19 @@ Available tools:
 - create_cube: Creates a cube in Blender. Args: {"size": float (optional)}
 - create_sphere: Creates a sphere. Args: {"radius": float (optional)}
 - import_mesh: Imports a mesh file. Args: {"path": string (required)}
+- remesh_object: Remeshes an object to clean quad topology. Args: {"object_name": string (required)}
 
 Response format (JSON only):
 {"tool": "tool_name", "args": {...}}
 
 If user asks something NOT related to Blender commands, respond:
-{"tool": "invalid", "message": "Please provide a Blender command like 'create cube' or 'import mesh'"}
+{"tool": "invalid", "message": "Please provide a Blender command like 'create cube' or 'remesh suzanne'"}
 
 Examples:
 User: "create a cube" -> {"tool": "create_cube", "args": {}}
 User: "import mesh from Desktop/model.obj" -> {"tool": "import_mesh", "args": {"path": "Desktop/model.obj"}}
+User: "remesh suzanne" -> {"tool": "remesh_object", "args": {"object_name": "suzanne"}}
+User: "clean up topology of cube" -> {"tool": "remesh_object", "args": {"object_name": "cube"}}
 User: "how are you?" -> {"tool": "invalid", "message": "Please provide a Blender command"}
 """
     

@@ -154,3 +154,50 @@ print("FBX imported successfully")
     else:
         return f"❌ Error: {response.get('message', 'Unknown error')}"
 
+
+def remesh_object(object_name: str) -> str:
+    """Remesh an object using QRemeshify addon"""
+    client = BlenderClient()
+    
+    code = f"""
+import bpy
+
+# Find object by name (case-insensitive search)
+target_name = "{object_name}".lower()
+found_obj = None
+
+for obj in bpy.data.objects:
+    if obj.name.lower().startswith(target_name):
+        found_obj = obj
+        break
+
+if not found_obj:
+    print(f"ERROR: Object not found: {object_name}")
+else:
+    # Select and make active
+    bpy.ops.object.select_all(action='DESELECT')
+    found_obj.select_set(True)
+    bpy.context.view_layer.objects.active = found_obj
+    
+    # Call QRemeshify operator
+    try:
+        bpy.ops.qremeshify.remesh()
+        print(f"SUCCESS: Remeshed {{found_obj.name}}")
+    except Exception as e:
+        print(f"ERROR: QRemeshify failed - {{str(e)}}")
+"""
+    
+    response = client.execute_code(code)
+    
+    if response.get("status") == "success":
+        result = response.get("result", {}).get("result", "")
+        if "SUCCESS" in result:
+            return f"✅ Object remeshed: {object_name}"
+        elif "ERROR: Object not found" in result:
+            return f"❌ Object '{object_name}' not found in scene"
+        elif "ERROR: QRemeshify failed" in result:
+            return f"❌ QRemeshify failed - is the addon installed?"
+        else:
+            return f"✅ Remesh operation completed for: {object_name}"
+    else:
+        return f"❌ Error: {response.get('message', 'Unknown error')}"

@@ -3,7 +3,7 @@ Tool Router - Maps agent decisions to Blender actions
 Simple if/else routing (no fancy abstractions)
 """
 
-from backend.mcp_client import create_cube, create_sphere, import_mesh
+from backend.mcp_client import create_cube, create_sphere, import_mesh, remesh_object
 
 
 def route_tool(tool_call: dict) -> str:
@@ -43,6 +43,12 @@ def route_tool(tool_call: dict) -> str:
         if not path:
             return "❌ Error: import_mesh requires 'path' argument"
         return import_mesh(path=path)
+    
+    elif tool_name == "remesh_object":
+        object_name = args.get("object_name")
+        if not object_name:
+            return "❌ Error: remesh_object requires 'object_name' argument"
+        return remesh_object(object_name=object_name)
     
     else:
         return f"❌ Unknown tool: {tool_name}"
