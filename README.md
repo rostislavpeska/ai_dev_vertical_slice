@@ -237,6 +237,7 @@ Expected: Error message - "Please provide a Blender command"
 ### "OPENAI_API_KEY not found"
 - ✅ Check `.env` file exists in project root
 - ✅ Verify API key starts with `sk-`
+- ✅ Restart server after creating `.env` file
 
 ### "Failed to fetch" (Web UI)
 - ✅ Check FastAPI server is running
@@ -245,6 +246,60 @@ Expected: Error message - "Please provide a Blender command"
 ### Virtual Environment Issues
 - ✅ Deactivate venv: `deactivate`
 - ✅ Use system Python for this project
+
+---
+
+## 🔧 Debugging Cheatsheet
+
+### Port 8000 Already in Use
+```powershell
+# Find what's using port 8000
+netstat -ano | findstr :8000
+
+# Kill specific process (replace PID with number from above)
+taskkill /F /PID <PID>
+
+# Kill all Python processes (nuclear option)
+taskkill /F /IM python.exe
+```
+
+### Server Won't Start
+```powershell
+# 1. Check if port is free
+netstat -ano | findstr :8000
+
+# 2. Kill existing process
+taskkill /F /PID <PID>
+
+# 3. Make sure you're in correct directory
+cd C:\Users\TIGO\Desktop\vertical_slice
+
+# 4. Start server
+python -m backend.main
+```
+
+### Changes Not Working
+```powershell
+# Always restart server after code changes!
+# 1. Stop server: Ctrl+C
+# 2. Start again: python -m backend.main
+```
+
+### Wrong Virtual Environment
+```powershell
+# Check if in venv (prompt shows (.venv))
+# If yes, deactivate:
+deactivate
+
+# Then run normally:
+python -m backend.main
+```
+
+### Quick Reset (When Everything is Broken)
+```powershell
+# Kill all Python, restart fresh
+taskkill /F /IM python.exe; cd C:\Users\TIGO\Desktop\vertical_slice; python -m backend.main
+```
 
 ---
 
